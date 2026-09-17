@@ -29,7 +29,8 @@ public/          favicon, immagine Open Graph
    Senza `formEndpoint` il modulo apre il client email del visitatore con il messaggio precompilato.
    Per ricevere le richieste direttamente, creare un form su [Formspree](https://formspree.io) e incollarne l'URL.
 2. `src/pages/privacy.astro`: completare i dati del titolare e far verificare l'informativa.
-3. Se si usa un dominio personalizzato, aggiungere `public/CNAME` con il dominio.
+3. Se si usa un dominio personalizzato, aggiungere `public/CNAME` con il dominio e creare la variabile
+   di repository `CUSTOM_DOMAIN` (Settings → Secrets and variables → Actions → Variables).
 
 ## Deploy su GitHub Pages
 
