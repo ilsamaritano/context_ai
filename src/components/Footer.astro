@@ -1,0 +1,103 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../data/site';
+import { services } from '../data/services';
+import { url } from '../lib/url';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <Logo />
+        <p>
+          Infrastruttura AI, modelli privati, sistemi RAG e automazione per aziende. Soluzioni on-premise e in cloud.
+        </p>
+        <a class="footer__mail" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+
+      <nav aria-labelledby="footer-services">
+        <h2 id="footer-services" class="eyebrow">Servizi</h2>
+        <ul role="list">
+          {services.map((s) => <li><a href={url(`servizi/#${s.id}`)}>{s.title}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="footer-company">
+        <h2 id="footer-company" class="eyebrow">Azienda</h2>
+        <ul role="list">
+          <li><a href={url('chi-siamo/')}>Chi siamo</a></li>
+          <li><a href={url('casi-d-uso/')}>Casi d’uso</a></li>
+          <li><a href={url('contatti/')}>Contatti</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {year} {site.name}. Tutti i diritti riservati.</p>
+      <a href={url('privacy/')}>Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-8) var(--space-6);
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-sm);
+  }
+  .footer__grid {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .footer__brand p {
+    margin-top: var(--space-4);
+    max-width: 38ch;
+    color: var(--ink-3);
+  }
+  .footer__mail {
+    display: inline-block;
+    margin-top: var(--space-4);
+    font-weight: 500;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .footer__mail:hover {
+    border-color: var(--ink);
+  }
+  .footer h2 {
+    margin-bottom: var(--space-4);
+    font-weight: 450;
+    letter-spacing: 0.08em;
+  }
+  .footer ul {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .footer nav a {
+    color: var(--ink-2);
+    transition: color 0.2s var(--ease);
+  }
+  .footer nav a:hover {
+    color: var(--ink);
+  }
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+  }
+  .footer__bottom a:hover {
+    color: var(--ink);
+  }
+  @media (min-width: 760px) {
+    .footer__grid {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+</style>

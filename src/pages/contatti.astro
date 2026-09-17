@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const nextSteps = [
+  'Leggiamo la richiesta e vi ricontattiamo per fissare una call conoscitiva.',
+  'Nella call approfondiamo processo, dati disponibili e vincoli tecnici.',
+  'Vi diamo una valutazione chiara: fattibilità, approccio consigliato e prossimi passi.',
+];
+---
+
+<BaseLayout
+  title="Contatti"
+  description="Contattate ContextAI per una consulenza su infrastruttura AI, modelli privati, soluzioni RAG e automazione. Raccontateci il vostro caso d’uso."
+>
+  <section class="contact">
+    <div class="container contact__grid">
+      <div class="contact__intro">
+        <p class="eyebrow">Contatti</p>
+        <h1 class="contact__title">Raccontateci il vostro caso d’uso</h1>
+        <p class="lead">Vi aiuteremo a capire se l’AI può creare valore reale nella vostra azienda, e in che modo.</p>
+
+        <div class="contact__channels">
+          <a class="channel" href={`mailto:${site.email}`}>
+            <Icon name="mail" size={20} />
+            <span>
+              <span class="channel__label">Scriveteci</span>
+              <span class="channel__value">{site.email}</span>
+            </span>
+          </a>
+          {
+            site.bookingUrl && (
+              <a class="channel" href={site.bookingUrl} target="_blank" rel="noopener">
+                <Icon name="calendar" size={20} />
+                <span>
+                  <span class="channel__label">Prenotate una call</span>
+                  <span class="channel__value">
+                    Scegliete data e ora<span class="visually-hidden"> (si apre in una nuova scheda)</span>
+                  </span>
+                </span>
+              </a>
+            )
+          }
+        </div>
+
+        <div class="next">
+          <h2 class="eyebrow">Cosa succede dopo</h2>
+          <ol role="list">
+            {
+              nextSteps.map((s, i) => (
+                <li>
+                  <span>{String(i + 1).padStart(2, '0')}</span>
+                  <p>{s}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+
+      <div class="contact__form">
+        <h2 class="visually-hidden">Modulo di contatto</h2>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    padding-block: clamp(3rem, 2rem + 5vw, 6.5rem) var(--section-y);
+  }
+  .contact__grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .contact__title {
+    margin: var(--space-5) 0;
+    font-size: var(--fs-2xl);
+    letter-spacing: -0.03em;
+    max-width: 16ch;
+  }
+  .contact__channels {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+  }
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    transition: border-color 0.2s var(--ease);
+  }
+  .channel:hover {
+    border-color: var(--ink);
+  }
+  .channel :global(svg) {
+    color: var(--accent);
+    flex: none;
+  }
+  .channel > span {
+    display: grid;
+  }
+  .channel__label {
+    font-size: var(--fs-xs);
+    color: var(--ink-3);
+  }
+  .channel__value {
+    font-weight: 520;
+  }
+  .next {
+    margin-top: var(--space-7);
+  }
+  .next ol {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  .next li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    color: var(--ink-2);
+  }
+  .next li span {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--accent);
+    padding-top: 0.3rem;
+  }
+  .contact__form {
+    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  .contact__form :global(.field input:not([type='checkbox'])),
+  .contact__form :global(.field select),
+  .contact__form :global(.field textarea) {
+    background: var(--bg);
+  }
+  @media (min-width: 1024px) {
+    .contact__grid {
+      grid-template-columns: 5fr 7fr;
+      align-items: start;
+    }
+    .contact__intro {
+      position: sticky;
+      top: 110px;
+    }
+  }
+</style>

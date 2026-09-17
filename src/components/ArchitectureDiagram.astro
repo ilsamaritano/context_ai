@@ -1,0 +1,226 @@
+---
+// Reference architecture schematic shown in the home hero. Pure HTML/CSS, no images.
+const columns = [
+  { step: '01', title: 'Fonti aziendali', items: ['Documenti e archivi', 'ERP · CRM · gestionali', 'Email e ticket'] },
+  { step: '02', title: 'Contesto', items: ['Indicizzazione', 'Database vettoriale', 'Permessi di accesso'] },
+  { step: '03', title: 'Modelli privati', items: ['Modelli open-weight', 'Fine-tuning mirato', 'Controllo qualità'] },
+  { step: '04', title: 'Applicazioni', items: ['Assistenti interni', 'Ricerca semantica', 'Automazioni'] },
+];
+---
+
+<figure class="arch">
+  <figcaption class="arch__bar">
+    <span class="arch__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span>Architettura di riferimento</span>
+    <span class="arch__env">On-premise · Cloud privato · Ibrido</span>
+  </figcaption>
+
+  <div class="arch__body">
+    <ol role="list" class="arch__cols">
+      {
+        columns.map((col, i) => (
+          <li class:list={['arch__col', { 'arch__col--core': i === 2 }]}>
+            <span class="arch__step">{col.step}</span>
+            <p class="arch__title">{col.title}</p>
+            <ul role="list">
+              {col.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="arch__perimeter">
+      <span>Perimetro aziendale</span>
+      <span class="arch__perimeter-note">I dati non escono dall’infrastruttura controllata</span>
+    </p>
+  </div>
+</figure>
+
+<style>
+  .arch {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .arch__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--ink-3);
+    letter-spacing: 0.02em;
+  }
+  .arch__dots {
+    display: inline-flex;
+    gap: 5px;
+  }
+  .arch__dots i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--line-strong);
+  }
+  .arch__env {
+    display: none;
+    margin-left: auto;
+  }
+
+  .arch__body {
+    position: relative;
+    padding: var(--space-5);
+    background-image: radial-gradient(circle, var(--line) 1px, transparent 1px);
+    background-size: 18px 18px;
+    background-position: -9px -9px;
+  }
+
+  .arch__cols {
+    position: relative;
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+  }
+
+  .arch__col {
+    position: relative;
+    padding: var(--space-4) var(--space-5) var(--space-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  /* Connectors: vertical on mobile */
+  .arch__col:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: calc(-1 * var(--space-5));
+    width: 1px;
+    height: var(--space-5);
+    background: var(--ink-3);
+  }
+  .arch__col:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: calc(50% - 3px);
+    bottom: calc(-1 * var(--space-5) - 1px);
+    width: 7px;
+    height: 7px;
+    border-right: 1px solid var(--ink-3);
+    border-bottom: 1px solid var(--ink-3);
+    transform: translateY(-3px) rotate(45deg);
+    z-index: 1;
+  }
+
+  .arch__col--core {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: var(--dark-ink);
+  }
+  .arch__step {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--accent);
+  }
+  .arch__col--core .arch__step {
+    color: var(--dark-accent);
+  }
+  .arch__title {
+    margin: var(--space-1) 0 var(--space-3);
+    font-size: var(--fs-base);
+    font-weight: 560;
+    letter-spacing: -0.01em;
+  }
+  .arch__col ul {
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--fs-sm);
+    color: var(--ink-2);
+  }
+  .arch__col--core ul {
+    color: var(--dark-ink-2);
+  }
+  .arch__col ul li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .arch__col ul li::before {
+    content: '';
+    flex: none;
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .arch__perimeter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .arch__perimeter-note {
+    text-transform: none;
+    letter-spacing: 0.01em;
+  }
+
+  @media (min-width: 760px) {
+    .arch__env {
+      display: inline;
+    }
+    .arch__body {
+      padding: var(--space-6);
+    }
+    .arch__cols {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+    .arch__col:not(:last-child)::after,
+    .arch__col:not(:last-child)::before {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .arch__cols {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+      padding: var(--space-6);
+    }
+    /* Horizontal connectors */
+    .arch__col:not(:last-child)::after,
+    .arch__col:not(:last-child)::before {
+      display: block;
+    }
+    .arch__col:not(:last-child)::after {
+      left: auto;
+      right: calc(-1 * var(--space-6));
+      top: 50%;
+      bottom: auto;
+      width: var(--space-6);
+      height: 1px;
+    }
+    .arch__col:not(:last-child)::before {
+      left: auto;
+      right: calc(-1 * var(--space-6) + 1px);
+      top: calc(50% - 3px);
+      bottom: auto;
+      transform: translateX(-3px) rotate(-45deg);
+    }
+  }
+</style>

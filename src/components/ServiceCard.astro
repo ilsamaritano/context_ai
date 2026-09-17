@@ -1,0 +1,83 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from '../data/services';
+
+interface Props {
+  icon: IconName;
+  index?: string;
+  title: string;
+  text: string;
+  href?: string;
+  linkLabel?: string;
+}
+const { icon, index, title, text, href, linkLabel = 'Approfondisci' } = Astro.props;
+---
+
+<article class="card">
+  <div class="card__top">
+    <span class="card__icon"><Icon name={icon} /></span>
+    {index && <span class="card__index">{index}</span>}
+  </div>
+  <h3 class="card__title">{title}</h3>
+  <p class="card__text">{text}</p>
+  {
+    href && (
+      <a class="link-arrow card__link" href={href}>
+        {linkLabel}
+        <span class="visually-hidden"> su {title}</span>
+        <Icon name="arrow" size={14} />
+      </a>
+    )
+  }
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--space-6);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+  .card:hover {
+    border-color: var(--line-strong);
+    box-shadow: var(--shadow);
+  }
+  .card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-7);
+  }
+  .card__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .card__index {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--ink-3);
+  }
+  .card__title {
+    font-size: var(--fs-lg);
+    margin-bottom: var(--space-3);
+  }
+  .card__text {
+    color: var(--ink-2);
+    margin-bottom: var(--space-5);
+  }
+  .card__link {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+</style>

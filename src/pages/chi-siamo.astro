@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import type { IconName } from '../data/services';
+
+const pillars = [
+  {
+    label: 'Missione',
+    title: 'Rendere l’AI uno strumento di lavoro affidabile',
+    text: 'Aiutiamo le aziende a portare l’intelligenza artificiale dentro i processi reali, con soluzioni che funzionano in produzione, rispettano i dati e generano valore misurabile.',
+  },
+  {
+    label: 'Visione',
+    title: 'Ogni azienda con la propria AI, sotto il proprio controllo',
+    text: 'Crediamo che i sistemi AI più utili saranno quelli costruiti sulla conoscenza specifica di ciascuna organizzazione, ospitati in infrastrutture di cui l’azienda mantiene la piena proprietà.',
+  },
+];
+
+const approach: { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: 'layers',
+    title: 'Prima il processo, poi la tecnologia',
+    text: 'Partiamo da cosa deve migliorare e da come si misura. La scelta di modelli e strumenti viene dopo.',
+  },
+  {
+    icon: 'shield',
+    title: 'Dati privati per impostazione predefinita',
+    text: 'Progettiamo per mantenere dati e modelli nel vostro perimetro. L’uso di servizi esterni è una scelta esplicita, mai un’impostazione nascosta.',
+  },
+  {
+    icon: 'scale',
+    title: 'Qualità misurata',
+    text: 'Definiamo metriche e set di valutazione sui vostri casi reali, così i risultati sono verificabili prima e dopo il rilascio.',
+  },
+  {
+    icon: 'plug',
+    title: 'Tecnologie aperte',
+    text: 'Preferiamo modelli open-weight e componenti standard, per evitare dipendenze da un singolo fornitore.',
+  },
+];
+---
+
+<BaseLayout
+  title="Chi siamo"
+  description="ContextAI porta l’intelligenza artificiale nei processi aziendali con soluzioni affidabili, private e scalabili. Missione, visione e approccio."
+>
+  <PageHero
+    label="Chi siamo"
+    title="L’AI nei processi reali, non nelle presentazioni"
+    lead="ContextAI porta l’intelligenza artificiale dentro i processi aziendali attraverso soluzioni affidabili, private e scalabili."
+  />
+
+  <section class="section" aria-labelledby="perche-esistiamo">
+    <div class="container story">
+      <SectionHeader id="perche-esistiamo" index="01" label="Perché esistiamo" title="Tra la demo e la produzione c’è molto lavoro" />
+      <div class="prose story__body">
+        <p>
+          Negli ultimi anni i modelli linguistici sono diventati accessibili a tutti. Molte aziende hanno provato un chatbot, un
+          prototipo, un’integrazione con un servizio pubblico. Poche hanno ottenuto un sistema che funziona ogni giorno, sui propri dati,
+          con livelli di sicurezza adeguati.
+        </p>
+        <p>
+          Il motivo raramente è il modello. È tutto ciò che sta intorno: l’infrastruttura, la qualità e l’aggiornamento dei documenti,
+          i permessi di accesso, l’integrazione con i gestionali, la misura dei risultati, la manutenzione nel tempo.
+        </p>
+        <p>
+          ContextAI nasce per occuparsi esattamente di questo. Siamo un team tecnico che progetta, costruisce e mantiene sistemi AI
+          per aziende che vogliono usarli sul serio.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface" aria-label="Missione e visione">
+    <div class="container mv">
+      {
+        pillars.map((p) => (
+          <article class="mv__item">
+            <p class="eyebrow">{p.label}</p>
+            <h2>{p.title}</h2>
+            <p>{p.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="approccio">
+    <div class="container">
+      <SectionHeader
+        id="approccio"
+        index="02"
+        label="Approccio"
+        title="I principi con cui lavoriamo"
+        lead="Pochi principi, applicati in ogni progetto, indipendentemente dalla dimensione."
+        layout="split"
+      />
+      <FeatureGrid items={approach} columns={2} />
+    </div>
+  </section>
+
+  <CtaBlock />
+</BaseLayout>
+
+<style>
+  .story__body p {
+    font-size: var(--fs-md);
+  }
+  @media (min-width: 1024px) {
+    .story {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-8);
+    }
+    .story :global(.sh) {
+      margin-bottom: 0;
+    }
+  }
+
+  .mv {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .mv__item h2 {
+    margin: var(--space-4) 0;
+    font-size: var(--fs-xl);
+    max-width: 22ch;
+  }
+  .mv__item > p:last-child {
+    color: var(--ink-2);
+    max-width: 52ch;
+  }
+  @media (min-width: 860px) {
+    .mv {
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .mv__item {
+      padding-right: var(--space-7);
+    }
+    .mv__item + .mv__item {
+      padding-left: var(--space-7);
+      border-left: 1px solid var(--line);
+    }
+  }
+</style>

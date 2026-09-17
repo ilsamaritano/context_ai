@@ -1,0 +1,64 @@
+---
+interface Props {
+  index?: string;
+  label: string;
+  title: string;
+  lead?: string;
+  id?: string;
+  /** "split" puts the title left and lead right on wide screens */
+  layout?: 'stack' | 'split';
+  headingLevel?: 'h1' | 'h2';
+}
+const { index, label, title, lead, id, layout = 'stack', headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
+---
+
+<div class:list={['sh', `sh--${layout}`]}>
+  <div class="sh__head">
+    <p class="eyebrow">
+      {index && <span class="sh__index">{index}</span>}
+      {label}
+    </p>
+    <Heading id={id} class="sh__title">{title}</Heading>
+  </div>
+  {lead && <p class="lead sh__lead">{lead}</p>}
+  <slot />
+</div>
+
+<style>
+  .sh {
+    display: grid;
+    gap: var(--space-5);
+    margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem);
+  }
+  .sh__head {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .sh__index {
+    color: var(--accent);
+  }
+  .sh__index::after {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    margin-left: var(--space-3);
+    vertical-align: middle;
+    background: var(--line-strong);
+  }
+  .sh__title {
+    font-size: var(--fs-2xl);
+    max-width: 20ch;
+  }
+  @media (min-width: 960px) {
+    .sh--split {
+      grid-template-columns: 1.15fr 1fr;
+      align-items: end;
+      column-gap: var(--space-8);
+    }
+    .sh--split .sh__lead {
+      padding-bottom: 0.35rem;
+    }
+  }
+</style>

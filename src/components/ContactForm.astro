@@ -1,0 +1,265 @@
+---
+// Static-hosting friendly contact form.
+// - If site.formEndpoint is set (e.g. Formspree), submits via fetch with a native POST fallback.
+// - Otherwise opens the visitor's email client with a pre-filled message.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+const topics = [
+  'Infrastruttura AI',
+  'Modelli privati',
+  'RAG e sistemi di conoscenza',
+  'Automazione',
+  'Non so ancora, vorrei un confronto',
+];
+---
+
+<form
+  class="form"
+  method="post"
+  action={site.formEndpoint || `mailto:${site.email}`}
+  data-contact-form
+  data-endpoint={site.formEndpoint}
+  data-email={site.email}
+  novalidate
+>
+  <div class="form__grid">
+    <div class="field">
+      <label for="nome">Nome e cognome <span aria-hidden="true">*</span></label>
+      <input id="nome" name="nome" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="azienda">Azienda <span aria-hidden="true">*</span></label>
+      <input id="azienda" name="azienda" type="text" autocomplete="organization" required />
+    </div>
+    <div class="field">
+      <label for="email">Email aziendale <span aria-hidden="true">*</span></label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="telefono">Telefono <span class="field__opt">(facoltativo)</span></label>
+      <input id="telefono" name="telefono" type="tel" autocomplete="tel" />
+    </div>
+    <div class="field field--full">
+      <label for="ambito">Ambito di interesse</label>
+      <select id="ambito" name="ambito">
+        {topics.map((t) => <option value={t}>{t}</option>)}
+      </select>
+    </div>
+    <div class="field field--full">
+      <label for="messaggio">Descrivete il vostro caso d’uso <span aria-hidden="true">*</span></label>
+      <textarea
+        id="messaggio"
+        name="messaggio"
+        rows="6"
+        required
+        aria-describedby="messaggio-hint"
+      ></textarea>
+      <p id="messaggio-hint" class="field__hint">
+        Quale processo volete migliorare, quali dati sono coinvolti, eventuali vincoli (on-premise, tempi, sistemi esistenti).
+      </p>
+    </div>
+    <div class="field field--full field--check">
+      <input id="privacy" name="privacy" type="checkbox" required />
+      <label for="privacy">
+        Ho letto l’<a href={url('privacy/')}>informativa privacy</a> e acconsento al trattamento dei dati per essere ricontattato. <span aria-hidden="true">*</span>
+      </label>
+    </div>
+    <!-- Honeypot -->
+    <div class="visually-hidden" aria-hidden="true">
+      <label for="website">Sito web</label>
+      <input id="website" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+  </div>
+
+  <div class="form__footer">
+    <button type="submit" class="btn btn--primary">
+      Invia richiesta
+      <Icon name="arrow" size={16} />
+    </button>
+    <p class="form__note">I campi contrassegnati con * sono obbligatori.</p>
+  </div>
+
+  <p class="form__status" role="status" aria-live="polite" data-status></p>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = form?.querySelector<HTMLElement>('[data-status]');
+
+  const setStatus = (msg: string, type: 'ok' | 'error' | '' = '') => {
+    if (!status) return;
+    status.textContent = msg;
+    status.dataset.type = type;
+  };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    setStatus('');
+
+    // Native validation with accessible focus on the first invalid field.
+    form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+    if (!form.checkValidity()) {
+      const invalid = Array.from(form.querySelectorAll<HTMLInputElement>('input, textarea, select')).filter(
+        (el) => !el.checkValidity(),
+      );
+      invalid.forEach((el) => el.setAttribute('aria-invalid', 'true'));
+      invalid[0]?.focus();
+      setStatus('Controllate i campi evidenziati: alcuni dati obbligatori mancano o non sono validi.', 'error');
+      return;
+    }
+
+    const data = new FormData(form);
+    if (data.get('_gotcha')) return;
+
+    const endpoint = form.dataset.endpoint;
+    if (endpoint) {
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      button?.setAttribute('disabled', '');
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        setStatus('Grazie, abbiamo ricevuto la vostra richiesta. Vi ricontatteremo al più presto.', 'ok');
+      } catch {
+        setStatus(`Invio non riuscito. Potete scriverci direttamente a ${form.dataset.email}.`, 'error');
+      } finally {
+        button?.removeAttribute('disabled');
+      }
+      return;
+    }
+
+    // No backend configured: compose an email.
+    const subject = `Richiesta da ${data.get('nome')} — ${data.get('azienda')}`;
+    const body = [
+      `Nome: ${data.get('nome')}`,
+      `Azienda: ${data.get('azienda')}`,
+      `Email: ${data.get('email')}`,
+      `Telefono: ${data.get('telefono') || '-'}`,
+      `Ambito: ${data.get('ambito')}`,
+      '',
+      String(data.get('messaggio')),
+    ].join('\n');
+    window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setStatus('Abbiamo aperto il vostro client email con il messaggio precompilato. Se non si apre, scriveteci direttamente.', 'ok');
+  });
+</script>
+
+<style>
+  .form {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .form__grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .field {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .field label {
+    font-size: var(--fs-sm);
+    font-weight: 520;
+  }
+  .field__opt {
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+  .field input:not([type='checkbox']),
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.75rem 0.9rem;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    line-height: 1.4;
+    transition:
+      border-color 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 150px;
+  }
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%235c6370' stroke-width='1.5'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    padding-right: 2.5rem;
+  }
+  .field input:hover,
+  .field select:hover,
+  .field textarea:hover {
+    border-color: var(--ink-3);
+  }
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .field textarea:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .field [aria-invalid='true'] {
+    border-color: #b42318 !important;
+  }
+  .field__hint {
+    font-size: var(--fs-sm);
+    color: var(--ink-3);
+  }
+  .field--check {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: var(--space-3);
+  }
+  .field--check input {
+    width: 18px;
+    height: 18px;
+    margin-top: 0.15rem;
+    accent-color: var(--accent);
+  }
+  .field--check label {
+    font-weight: 400;
+    color: var(--ink-2);
+  }
+  .field--check a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .form__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .form__note {
+    font-size: var(--fs-sm);
+    color: var(--ink-3);
+  }
+  .form__status:empty {
+    display: none;
+  }
+  .form__status {
+    padding: var(--space-4);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-sm);
+    background: var(--accent-soft);
+  }
+  .form__status[data-type='error'] {
+    background: #fdecea;
+    color: #7a1a12;
+  }
+  @media (min-width: 700px) {
+    .form__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .field--full {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

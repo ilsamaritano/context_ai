@@ -1,0 +1,98 @@
+---
+import Icon from './Icon.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  text?: string;
+  primary?: { label: string; href: string };
+  /** Pass null to hide the secondary action. */
+  secondary?: { label: string; href: string } | null;
+}
+const {
+  title = 'Avete un processo che l’AI potrebbe migliorare?',
+  text = 'Raccontateci il vostro caso d’uso. In una prima call conoscitiva valutiamo insieme fattibilità, requisiti e valore atteso.',
+  primary = { label: 'Prenota una call', href: url('contatti/') },
+  secondary = { label: 'Scopri i servizi', href: url('servizi/') },
+} = Astro.props;
+---
+
+<section class="cta-wrap" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="cta">
+      <div class="cta__content">
+        <p class="eyebrow cta__eyebrow">Parliamone</p>
+        <h2 id="cta-title" class="cta__title">{title}</h2>
+        <p class="cta__text">{text}</p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--light" href={primary.href}>
+          {primary.label}
+          <Icon name="arrow" size={16} />
+        </a>
+        {secondary && <a class="btn btn--ghost-light" href={secondary.href}>{secondary.label}</a>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-wrap {
+    padding-block: var(--section-y);
+  }
+  :global(.section) + .cta-wrap {
+    border-top: 1px solid var(--line);
+  }
+  .cta {
+    position: relative;
+    display: grid;
+    gap: var(--space-7);
+    padding: clamp(2rem, 1rem + 5vw, 5rem);
+    background: var(--dark);
+    color: var(--dark-ink);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(var(--dark-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--dark-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 90% at 100% 100%, #000 10%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 90% at 100% 100%, #000 10%, transparent 70%);
+    opacity: 0.8;
+  }
+  .cta__eyebrow {
+    color: var(--dark-accent);
+  }
+  .cta__title {
+    margin: var(--space-4) 0;
+    font-size: var(--fs-2xl);
+    max-width: 18ch;
+  }
+  .cta__text {
+    color: var(--dark-ink-2);
+    font-size: var(--fs-md);
+    max-width: 52ch;
+  }
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-self: end;
+  }
+  @media (min-width: 960px) {
+    .cta {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: end;
+    }
+    .cta__actions {
+      justify-content: flex-end;
+    }
+  }
+</style>

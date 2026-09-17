@@ -1,0 +1,55 @@
+---
+// NOTE: placeholder privacy notice. Have it reviewed and completed by a legal/GDPR advisor before publishing.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout title="Informativa privacy" description="Informativa sul trattamento dei dati personali del sito ContextAI." noindex>
+  <PageHero
+    label="Privacy"
+    title="Informativa privacy"
+    lead="Informazioni sul trattamento dei dati personali raccolti tramite questo sito, ai sensi del Regolamento (UE) 2016/679 (GDPR)."
+  />
+  <section class="section">
+    <div class="container prose legal">
+      <h2>Titolare del trattamento</h2>
+      <p>{site.name} — [ragione sociale, sede legale, P.IVA da completare]. Contatto: <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+
+      <h2>Dati raccolti</h2>
+      <p>
+        Tramite il modulo di contatto raccogliamo nome, azienda, indirizzo email, numero di telefono (facoltativo) e il contenuto del
+        messaggio. Il sito non utilizza cookie di profilazione.
+      </p>
+
+      <h2>Finalità e base giuridica</h2>
+      <p>
+        I dati sono trattati esclusivamente per rispondere alla richiesta e per eventuali comunicazioni precontrattuali, sulla base
+        delle misure precontrattuali richieste dall’interessato (art. 6.1.b GDPR).
+      </p>
+
+      <h2>Conservazione</h2>
+      <p>I dati sono conservati per il tempo necessario a gestire la richiesta e comunque non oltre 24 mesi, salvo rapporto contrattuale.</p>
+
+      <h2>Diritti dell’interessato</h2>
+      <p>
+        È possibile esercitare i diritti di accesso, rettifica, cancellazione, limitazione, opposizione e portabilità scrivendo a
+        {' '}<a href={`mailto:${site.email}`}>{site.email}</a>, nonché proporre reclamo al Garante per la protezione dei dati personali.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal h2 {
+    margin: var(--space-7) 0 var(--space-3);
+    font-size: var(--fs-lg);
+  }
+  .legal h2:first-child {
+    margin-top: 0;
+  }
+  .legal a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

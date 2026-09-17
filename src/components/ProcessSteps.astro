@@ -1,0 +1,76 @@
+---
+interface Props {
+  steps: { title: string; text: string }[];
+}
+const { steps } = Astro.props;
+---
+
+<ol role="list" class="steps">
+  {
+    steps.map((step, i) => (
+      <li class="step">
+        <span class="step__num" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <h3 class="step__title">
+          <span class="visually-hidden">Fase {i + 1}: </span>
+          {step.title}
+        </h3>
+        <p class="step__text">{step.text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    display: grid;
+    counter-reset: step;
+    border-top: 1px solid var(--line);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    column-gap: var(--space-4);
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .step__num {
+    grid-row: span 2;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--accent);
+    padding-top: 0.2rem;
+  }
+  .step__title {
+    font-size: var(--fs-lg);
+    margin-bottom: var(--space-2);
+  }
+  .step__text {
+    color: var(--ink-2);
+    max-width: 52ch;
+  }
+
+  @media (min-width: 960px) {
+    .steps {
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 0;
+    }
+    .step {
+      grid-template-columns: 1fr;
+      align-content: start;
+      padding: 0 var(--space-6) 0 0;
+      border-bottom: 0;
+      position: relative;
+    }
+    .step:not(:first-child) {
+      padding-left: var(--space-6);
+      border-left: 1px solid var(--line);
+    }
+    .step__num {
+      grid-row: auto;
+      margin-bottom: var(--space-7);
+      padding-top: 0;
+    }
+  }
+</style>

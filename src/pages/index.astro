@@ -1,0 +1,305 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Icon from '../components/Icon.astro';
+import { hero, pillars, audience, process, homeUseCases, differentiators } from '../data/home';
+import { url } from '../lib/url';
+---
+
+<BaseLayout
+  title="ContextAI — Infrastruttura AI e modelli privati per le aziende"
+  description="Infrastruttura AI, modelli AI privati, soluzioni RAG e automazione per aziende e PMI. Sistemi AI sicuri, on-premise o in cloud, integrati con i vostri processi."
+>
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero__text">
+        <p class="eyebrow hero__eyebrow"><span class="hero__pulse" aria-hidden="true"></span>{hero.eyebrow}</p>
+        <h1 id="hero-title" class="hero__title">{hero.title}</h1>
+        <div class="hero__row">
+          <p class="lead hero__lead">{hero.lead}</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href={url('contatti/')}>
+              Prenota una call
+              <Icon name="arrow" size={16} />
+            </a>
+            <a class="btn btn--secondary" href={url('servizi/')}>Scopri i servizi</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <ArchitectureDiagram />
+      </div>
+    </div>
+  </section>
+
+  <!-- Cosa facciamo -->
+  <section class="section" aria-labelledby="cosa-facciamo">
+    <div class="container">
+      <SectionHeader
+        id="cosa-facciamo"
+        index="01"
+        label="Cosa facciamo"
+        title="Portiamo l’AI dentro i processi aziendali, non accanto"
+        lead="Non installiamo chatbot generici. Progettiamo sistemi AI completi: dall’infrastruttura su cui girano ai modelli che li alimentano, fino alle applicazioni che le persone usano ogni giorno."
+        layout="split"
+      />
+      <ul role="list" class="grid-3">
+        {
+          pillars.map((p, i) => (
+            <li>
+              <ServiceCard
+                icon={p.icon}
+                index={String(i + 1).padStart(2, '0')}
+                title={p.title}
+                text={p.text}
+                href={url(`servizi/#${p.anchor}`)}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Per chi -->
+  <section class="section section--surface" aria-labelledby="per-chi">
+    <div class="container audience">
+      <SectionHeader id="per-chi" index="02" label="Per chi" title={audience.title} lead={audience.lead} />
+      <ul role="list" class="audience__list">
+        {
+          audience.items.map((item) => (
+            <li class="audience__item">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Come lavoriamo -->
+  <section class="section" aria-labelledby="come-lavoriamo">
+    <div class="container">
+      <SectionHeader
+        id="come-lavoriamo"
+        index="03"
+        label="Come lavoriamo"
+        title="Un metodo in quattro fasi, dal problema alla produzione"
+        lead="Ogni progetto parte da un obiettivo di business misurabile. Validiamo presto, su dati reali, e rilasciamo solo ciò che funziona."
+        layout="split"
+      />
+      <ProcessSteps steps={process} />
+    </div>
+  </section>
+
+  <!-- Casi d'uso -->
+  <section class="section section--surface" aria-labelledby="casi-uso">
+    <div class="container">
+      <SectionHeader
+        id="casi-uso"
+        index="04"
+        label="Casi d’uso"
+        title="Applicazioni concrete, già oggi"
+        lead="Gli ambiti in cui l’AI produce più spesso un ritorno misurabile: meno tempo perso a cercare, meno lavoro manuale, decisioni meglio informate."
+        layout="split"
+      />
+      <ol role="list" class="uses">
+        {
+          homeUseCases.map((u, i) => (
+            <li class="uses__item">
+              <span class="uses__num">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="uses__title">{u.title}</h3>
+              <p class="uses__text">{u.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="uses__more">
+        <a class="link-arrow" href={url('casi-d-uso/')}>
+          Vedi i casi d’uso nel dettaglio
+          <Icon name="arrow" size={14} />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Perché ContextAI -->
+  <section class="section" aria-labelledby="perche">
+    <div class="container">
+      <SectionHeader
+        id="perche"
+        index="05"
+        label="Perché ContextAI"
+        title="Competenza tecnica, con un approccio da partner enterprise"
+        lead="Il valore dell’AI in azienda dipende da come viene integrata, protetta e mantenuta nel tempo. È lì che concentriamo il nostro lavoro."
+        layout="split"
+      />
+      <FeatureGrid items={differentiators} />
+    </div>
+  </section>
+
+  <CtaBlock />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-block: clamp(3rem, 1.5rem + 6vw, 7rem) clamp(3.5rem, 2rem + 5vw, 6.5rem);
+    overflow: hidden;
+  }
+  .hero__eyebrow {
+    gap: var(--space-3);
+  }
+  .hero__pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .hero__title {
+    margin: var(--space-5) 0 var(--space-6);
+    font-size: var(--fs-3xl);
+    font-weight: 560;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    max-width: 15ch;
+  }
+  .hero__row {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .hero__lead {
+    font-size: var(--fs-md);
+    max-width: 54ch;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .hero__visual {
+    margin-top: clamp(3rem, 2rem + 4vw, 5rem);
+  }
+  @media (min-width: 960px) {
+    .hero__row {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      column-gap: var(--space-8);
+    }
+  }
+
+  /* Grids */
+  .grid-3 {
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 900px) {
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+  }
+
+  /* Audience */
+  .audience__list {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+  .audience__item {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .audience__item h3 {
+    font-size: var(--fs-md);
+    font-weight: 560;
+    letter-spacing: -0.012em;
+  }
+  .audience__item p {
+    color: var(--ink-2);
+  }
+  @media (min-width: 760px) {
+    .audience__item {
+      grid-template-columns: 1fr 1.6fr;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+  }
+  @media (min-width: 1024px) {
+    .audience {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+    .audience :global(.sh) {
+      position: sticky;
+      top: 110px;
+      margin-bottom: 0;
+    }
+  }
+
+  /* Use cases (home) */
+  .uses {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .uses__item {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    background: var(--surface);
+  }
+  .uses__num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--accent);
+    margin-bottom: var(--space-4);
+  }
+  .uses__title {
+    font-size: var(--fs-md);
+    font-weight: 560;
+    letter-spacing: -0.012em;
+  }
+  .uses__text {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+  .uses__more {
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 700px) {
+    .uses {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .uses__item:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 1024px) {
+    .uses {
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .uses__item {
+      grid-column: span 2;
+      min-height: 220px;
+    }
+    .uses__item:nth-child(-n + 2) {
+      grid-column: span 3;
+    }
+  }
+</style>

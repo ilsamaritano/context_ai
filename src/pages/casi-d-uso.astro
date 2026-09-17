@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import UseCaseCard from '../components/UseCaseCard.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import { useCases } from '../data/useCases';
+import { url } from '../lib/url';
+---
+
+<BaseLayout
+  title="Casi d’uso dell’AI in azienda"
+  description="Esempi concreti di AI per le aziende: assistenti sulla documentazione interna, supporto clienti, ricerca semantica, automazione dei ticket e analisi documentale con modelli privati."
+>
+  <PageHero
+    label="Casi d’uso"
+    title="Problemi concreti, soluzioni misurabili"
+    lead="Scenari ricorrenti nelle aziende con cui ci confrontiamo. Per ciascuno: il problema di partenza, la soluzione che realizziamo e il beneficio atteso."
+  />
+
+  <section class="section" aria-label="Elenco dei casi d’uso">
+    <div class="container">
+      {useCases.map((uc, i) => <UseCaseCard useCase={uc} index={i + 1} />)}
+    </div>
+  </section>
+
+  <CtaBlock
+    title="Il vostro caso non è in elenco?"
+    text="Questi sono solo gli scenari più frequenti. Raccontateci il vostro processo: vi diremo con franchezza se e come l’AI può creare valore reale."
+    primary={{ label: 'Raccontaci il tuo caso', href: url('contatti/') }}
+    secondary={null}
+  />
+</BaseLayout>

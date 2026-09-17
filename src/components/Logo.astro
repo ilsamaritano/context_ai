@@ -1,0 +1,30 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={['logo', className]}>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M9 3H5.5A2.5 2.5 0 0 0 3 5.5v13A2.5 2.5 0 0 0 5.5 21H9" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    <path d="M15 3h3.5A2.5 2.5 0 0 1 21 5.5v13a2.5 2.5 0 0 1-2.5 2.5H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    <rect x="9" y="9" width="6" height="6" rx="1.2" fill="var(--logo-accent, #2b45c4)"></rect>
+  </svg>
+  <span class="logo__text">Context<span>AI</span></span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    letter-spacing: -0.02em;
+  }
+  .logo__text span {
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+</style>

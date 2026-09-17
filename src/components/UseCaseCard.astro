@@ -1,0 +1,97 @@
+---
+// Use case with problem → solution → benefit structure.
+import type { UseCase } from '../data/useCases';
+
+interface Props {
+  useCase: UseCase;
+  index: number;
+}
+const { useCase, index } = Astro.props;
+const rows = [
+  { label: 'Problema', text: useCase.problem },
+  { label: 'Soluzione', text: useCase.solution },
+  { label: 'Beneficio', text: useCase.benefit },
+];
+---
+
+<article class="uc" id={useCase.id} aria-labelledby={`${useCase.id}-title`}>
+  <header class="uc__head">
+    <p class="uc__meta">
+      <span class="uc__index">{String(index).padStart(2, '0')}</span>
+      <span>{useCase.sector}</span>
+    </p>
+    <h2 id={`${useCase.id}-title`} class="uc__title">{useCase.title}</h2>
+  </header>
+  <dl class="uc__rows">
+    {
+      rows.map((row) => (
+        <div class:list={['uc__row', { 'uc__row--benefit': row.label === 'Beneficio' }]}>
+          <dt>{row.label}</dt>
+          <dd>{row.text}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</article>
+
+<style>
+  .uc {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--line);
+    scroll-margin-top: 90px;
+  }
+  .uc:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .uc__meta {
+    display: flex;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .uc__index {
+    color: var(--accent);
+  }
+  .uc__title {
+    font-size: var(--fs-xl);
+    max-width: 18ch;
+  }
+  .uc__rows {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .uc__row {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: var(--space-5);
+    border-left: 1px solid var(--line-strong);
+  }
+  .uc__row dt {
+    font-size: var(--fs-sm);
+    font-weight: 560;
+  }
+  .uc__row dd {
+    margin: 0;
+    color: var(--ink-2);
+    max-width: 60ch;
+  }
+  .uc__row--benefit {
+    border-left-color: var(--accent);
+  }
+  .uc__row--benefit dd {
+    color: var(--ink);
+  }
+  @media (min-width: 960px) {
+    .uc {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

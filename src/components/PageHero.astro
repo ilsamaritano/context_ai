@@ -1,0 +1,37 @@
+---
+// Header block for inner pages.
+interface Props {
+  label: string;
+  title: string;
+  lead: string;
+}
+const { label, title, lead } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">{label}</p>
+    <h1 class="page-hero__title">{title}</h1>
+    <p class="lead page-hero__lead">{lead}</p>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .page-hero__title {
+    margin: var(--space-5) 0 var(--space-5);
+    font-size: var(--fs-3xl);
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+    max-width: 16ch;
+  }
+  .page-hero__lead {
+    font-size: var(--fs-lg);
+    line-height: 1.5;
+    max-width: 58ch;
+  }
+</style>
