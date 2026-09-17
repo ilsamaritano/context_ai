@@ -5,8 +5,10 @@ import type { UseCase } from '../data/useCases';
 interface Props {
   useCase: UseCase;
   index: number;
+  headingLevel?: 'h2' | 'h3';
 }
-const { useCase, index } = Astro.props;
+const { useCase, index, headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
 const rows = [
   { label: 'Problema', text: useCase.problem },
   { label: 'Soluzione', text: useCase.solution },
@@ -20,7 +22,7 @@ const rows = [
       <span class="uc__index">{String(index).padStart(2, '0')}</span>
       <span>{useCase.sector}</span>
     </p>
-    <h2 id={`${useCase.id}-title`} class="uc__title">{useCase.title}</h2>
+    <Heading id={`${useCase.id}-title`} class="uc__title">{useCase.title}</Heading>
   </header>
   <dl class="uc__rows">
     {

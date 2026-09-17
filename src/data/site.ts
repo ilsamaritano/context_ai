@@ -6,8 +6,7 @@ export const site = {
   description:
     'ContextAI progetta infrastrutture AI, modelli privati, sistemi RAG e automazioni per aziende e PMI. Soluzioni sicure, on-premise o in cloud, integrate con i sistemi esistenti.',
   locale: 'it_IT',
-  // TODO: replace with real contact details before going live.
-  email: 'info@contextai.it',
+  email: 'vincesammartino@gmail.com',
   // Optional: calendar booking URL (Calendly, Cal.com, Google Calendar...). Empty string hides it.
   bookingUrl: '',
   // Optional: form backend endpoint (e.g. Formspree "https://formspree.io/f/xxxx").
@@ -19,6 +18,7 @@ export const site = {
 export const nav = [
   { label: 'Servizi', href: 'servizi/' },
   { label: 'Casi d’uso', href: 'casi-d-uso/' },
+  { label: 'Pubblica amministrazione', href: 'pubblica-amministrazione/' },
   { label: 'Chi siamo', href: 'chi-siamo/' },
 ];
 

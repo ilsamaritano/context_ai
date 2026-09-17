@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import UseCaseCard from '../components/UseCaseCard.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Icon from '../components/Icon.astro';
+import { paHero, paEntities, paRequirements, paUseCases, paProcess } from '../data/publicSector';
+import { url } from '../lib/url';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Soluzioni AI per la pubblica amministrazione',
+  serviceType: 'Intelligenza artificiale per enti pubblici',
+  description: paHero.lead,
+  provider: { '@type': 'Organization', name: 'ContextAI' },
+  areaServed: 'IT',
+  audience: { '@type': 'Audience', audienceType: 'Pubblica amministrazione, comuni, università, enti pubblici' },
+};
+---
+
+<BaseLayout
+  title="AI per la pubblica amministrazione: comuni, università ed enti pubblici"
+  description="Soluzioni di intelligenza artificiale per la pubblica amministrazione: assistenti per cittadini e studenti, smistamento del protocollo, ricerca su atti. Sistemi privati, conformi a GDPR e AI Act."
+  jsonLd={jsonLd}
+>
+  <PageHero label={paHero.label} title={paHero.title} lead={paHero.lead}>
+    <p class="actions">
+      <a class="btn btn--primary" href={url('contatti/')}>
+        Richiedi un incontro
+        <Icon name="arrow" size={16} />
+      </a>
+      <a class="btn btn--secondary" href="#casi-pa">Vedi i casi d’uso</a>
+    </p>
+  </PageHero>
+
+  <!-- Enti -->
+  <section class="section" aria-labelledby="enti">
+    <div class="container entities">
+      <SectionHeader
+        id="enti"
+        index="01"
+        label="A chi ci rivolgiamo"
+        title="Amministrazioni con molti documenti e poche risorse da perdere"
+        lead="Lavoriamo con enti che vogliono introdurre l’AI in modo graduale, verificabile e rispettoso dei vincoli del settore pubblico."
+      />
+      <ul role="list" class="entities__list">
+        {
+          paEntities.map((e) => (
+            <li class="entities__item">
+              <h3>{e.title}</h3>
+              <p>{e.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Requisiti -->
+  <section class="section section--surface" aria-labelledby="requisiti">
+    <div class="container">
+      <SectionHeader
+        id="requisiti"
+        index="02"
+        label="Requisiti del settore pubblico"
+        title="Conformità e controllo, fin dalla progettazione"
+        lead="Nella PA un sistema AI utile ma non conforme non è utilizzabile. Per questo trattiamo sicurezza, trasparenza e sovranità del dato come requisiti di progetto, non come verifiche finali."
+        layout="split"
+      />
+      <FeatureGrid items={paRequirements} />
+      <p class="note">
+        Le valutazioni giuridiche restano in capo all’ente e ai suoi referenti (RPD/DPO, responsabile per la transizione digitale):
+        noi forniamo la documentazione tecnica necessaria a supportarle.
+      </p>
+    </div>
+  </section>
+
+  <!-- Casi d'uso -->
+  <section class="section" aria-labelledby="casi-pa">
+    <div class="container">
+      <SectionHeader
+        id="casi-pa"
+        index="03"
+        label="Casi d’uso"
+        title="Dove l’AI aiuta davvero uffici e cittadini"
+        lead="Scenari concreti, pensati per partire con un progetto pilota circoscritto e crescere sulla stessa infrastruttura."
+        layout="split"
+      />
+      <div class="cases">
+        {paUseCases.map((uc, i) => <UseCaseCard useCase={uc} index={i + 1} headingLevel="h3" />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Metodo -->
+  <section class="section section--surface" aria-labelledby="metodo-pa">
+    <div class="container">
+      <SectionHeader
+        id="metodo-pa"
+        index="04"
+        label="Come lavoriamo con gli enti"
+        title="Dal progetto pilota al servizio in produzione"
+        lead="Un percorso pensato per i tempi e le regole della pubblica amministrazione, con documentazione adeguata a ogni passaggio."
+        layout="split"
+      />
+      <ProcessSteps steps={paProcess} />
+    </div>
+  </section>
+
+  <CtaBlock
+    title="Valutiamo insieme un progetto pilota per il vostro ente"
+    text="Raccontateci quali uffici o servizi volete migliorare. Vi proponiamo un primo caso d’uso con obiettivi misurabili e vi indichiamo requisiti tecnici e documentazione necessari."
+    primary={{ label: 'Richiedi un incontro', href: url('contatti/') }}
+    secondary={{ label: 'Scopri i servizi', href: url('servizi/') }}
+  />
+</BaseLayout>
+
+<style>
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+  }
+
+  .entities__list {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .entities__item {
+    padding: var(--space-6);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+  .entities__item h3 {
+    font-size: var(--fs-md);
+    font-weight: 560;
+    letter-spacing: -0.012em;
+    margin-bottom: var(--space-2);
+  }
+  .entities__item p {
+    color: var(--ink-2);
+  }
+  @media (min-width: 700px) {
+    .entities__list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1024px) {
+    .entities {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+    .entities :global(.sh) {
+      position: sticky;
+      top: 110px;
+      margin-bottom: 0;
+    }
+  }
+
+  .note {
+    margin-top: var(--space-5);
+    font-size: var(--fs-sm);
+    color: var(--ink-3);
+    max-width: 72ch;
+  }
+</style>

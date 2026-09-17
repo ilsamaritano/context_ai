@@ -76,7 +76,14 @@ import { url } from '../lib/url';
           audience.items.map((item) => (
             <li class="audience__item">
               <h3>{item.title}</h3>
-              <p>{item.text}</p>
+              <p>
+                {item.text}
+                {'href' in item && (
+                  <a class="audience__link" href={url(item.href)}>
+                    Soluzioni per la PA <Icon name="arrow" size={14} />
+                  </a>
+                )}
+              </p>
             </li>
           ))
         }
@@ -226,6 +233,21 @@ import { url } from '../lib/url';
   }
   .audience__item p {
     color: var(--ink-2);
+  }
+  .audience__link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: fit-content;
+    margin-top: var(--space-2);
+    font-size: var(--fs-sm);
+    font-weight: 520;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .audience__link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
   }
   @media (min-width: 760px) {
     .audience__item {

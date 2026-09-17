@@ -40,6 +40,11 @@ export const audience = {
     { title: 'Industria e manifattura', text: 'Con documentazione tecnica, qualità, manutenzione e dati di produzione.' },
     { title: 'Studi professionali', text: 'Legali, tecnici, commercialisti: archivi documentali ampi e riservati.' },
     { title: 'Organizzazioni complesse', text: 'Con volumi di dati elevati, vincoli normativi o più sedi.' },
+    {
+      title: 'Pubblica amministrazione',
+      text: 'Comuni, università ed enti pubblici che cercano soluzioni private e conformi a GDPR e AI Act.',
+      href: 'pubblica-amministrazione/',
+    },
   ],
 };
 
